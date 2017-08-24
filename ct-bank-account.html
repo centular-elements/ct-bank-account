@@ -1,0 +1,236 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<!--
+`ct-bank-account`
+Element for capturing a new bank account
+
+@demo demo/index.html
+-->
+
+<dom-module id="ct-bank-account">
+  <template>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style is="custom-style">
+      :host {
+
+        --paper-input-container:{
+          border-top: 1px solid #ccc;
+          border-left: 1px solid #ccc;
+          border-right: 1px solid #ccc;
+          border-bottom: none;
+          padding: 0 !important;
+          margin-bottom: 24px;
+        };
+
+        --paper-input-container-input: {
+
+          margin-left: 10px;
+        };
+
+        --paper-input-container-label: {
+          margin-left: 10px;
+        };
+      }
+
+      .main-section {
+        margin-top:20px;
+      }
+
+      paper-dropdown-menu.custom-dropdown {
+        width: 100%;
+        --paper-input-container-input: {
+          padding-left: 10px;
+        };
+      }
+
+    </style>
+
+    <div class="main-section">
+      <form is="iron-form"
+            id="form"
+            method="post"
+            disable-native-validation-ui
+            novalidate>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        class="ct-label ct-bordered"
+                        label="Account Holder First Name"
+                        type="text"
+                        name="accountHolderFirstName"
+                        value="[[ account.accountHolderFirstName ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Account Holder Last Name"
+                        type="text"
+                        name="accountHolderLastName"
+                        value="[[ account.accountHolderLastName ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Account Holder ID Number"
+                        type="text"
+                        name="accountHolderIdNumber"
+                        value="[[ account.accountHolderIdNumber ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <template is="dom-if" if="[[ readonly ]]">
+                  <paper-input
+                          label="Account Type"
+                          value="[[ account.accountType.name ]]"
+                          readonly>
+                  </paper-input>
+                </template>
+                <template is="dom-if" if="[[ !readonly ]]">
+                  <paper-dropdown-menu
+                          class="custom-dropdown"
+                          id="accountTypeDropDown"
+                          name="accountType"
+                          label="Account Type"
+                          always-float-label
+                          noink
+                          no-animations
+                          required
+                          placeholder="Please select an account type">
+                    <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ account.accountType.id ]]">
+                      <template is="dom-repeat" items="[[ accountTypes ]]">
+                        <paper-item key="[[item.id]]">[[item.name]]</paper-item>
+                      </template>
+                    </paper-listbox>
+                  </paper-dropdown-menu>
+                </template>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Bank"
+                        type="text"
+                        name="bank"
+                        value="[[ account.bank ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Branch Code"
+                        type="text"
+                        name="branchCode"
+                        value="[[ account.branchCode ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Branch Name"
+                        type="text"
+                        name="branchName"
+                        value="[[ account.branchName ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <div class="form-group">
+                <paper-input
+                        label="Account Number"
+                        type="text"
+                        name="accountNumber"
+                        value="[[ account.accountNumber ]]"
+                        readonly="[[ readonly ]]"
+                        required
+                        auto-validate="[[ !readonly ]]"
+                        error-message="Required">
+                </paper-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'ct-bank-account',
+      behaviors: [CT.Behaviours.ApiConsumer],
+
+      properties: {
+        readonly: {
+          type: Boolean,
+          value: false
+        },
+        accountTypes: Array,
+        account: {
+          type: Object,
+          value: {
+            accountHolderFirstName: "",
+            accountHolderLastName: "",
+            accountHolderIdNumber: "",
+            bank: "",
+            branchCode: "",
+            branchName: "",
+            accountNumber: "",
+            accountType: {
+              id: null,
+              name: ""
+            }
+          }
+        },
+      },
+
+      validate: function () {
+        return this.$.form.validate();
+      },
+
+      serialize: function () {
+        var formData = this.$.form.serialize();
+        formData.accountType = this.$$('#accountTypeDropDown').selectedItem.item;
+        return formData;
+      }
+    });
+  </script>
+</dom-module>
+
