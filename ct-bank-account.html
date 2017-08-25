@@ -106,6 +106,7 @@ Element for capturing a new bank account
               <div class="form-group">
                 <template is="dom-if" if="[[ readonly ]]">
                   <paper-input
+                          id="readonlyAccountType"
                           label="Account Type"
                           value="[[ account.accountType.name ]]"
                           readonly>
@@ -124,7 +125,7 @@ Element for capturing a new bank account
                           placeholder="Please select an account type">
                     <paper-listbox class="dropdown-content" id="accountType" attr-for-selected="key" selected="[[ account.accountType.id ]]">
                       <template is="dom-repeat" items="[[ accountTypes ]]">
-                        <paper-item key="[[item.id]]">[[item.name]]</paper-item>
+                        <paper-item key="[[item.id]]" item="[[item]]">[[item.name]]</paper-item>
                       </template>
                     </paper-listbox>
                   </paper-dropdown-menu>
@@ -227,7 +228,10 @@ Element for capturing a new bank account
 
       serialize: function () {
         var formData = this.$.form.serialize();
-        formData.accountType = this.$$('#accountTypeDropDown').selectedItem.item;
+        var accountTypeDropDown = this.$$('#accountTypeDropDown');
+        formData.accountType = accountTypeDropDown.selectedItem.item.id;
+        // update the readonly version of accountType otherwise switching back to readonly, the dropdown selected value is not reflected
+        this.$$('#readonlyAccountType').value = accountTypeDropDown.selectedItem.item.name;
         return formData;
       }
     });
