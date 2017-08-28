@@ -231,7 +231,10 @@ Element for capturing a new bank account
         var accountTypeDropDown = this.$$('#accountTypeDropDown');
         formData.accountType = accountTypeDropDown.selectedItem.item.id;
         // update the readonly version of accountType otherwise switching back to readonly, the dropdown selected value is not reflected
-        this.$$('#readonlyAccountType').value = accountTypeDropDown.selectedItem.item.name;
+        var readonlyAccountType = this.$$('#readonlyAccountType');
+        if (readonlyAccountType) {
+          this.$$('#readonlyAccountType').value = accountTypeDropDown.selectedItem.item.name;
+        }
         return formData;
       }
     });
