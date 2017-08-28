@@ -235,6 +235,22 @@ Element for capturing a new bank account
           this.$$('#readonlyAccountType').value = accountTypeDropDown ? accountTypeDropDown.selectedItem.item.name : this.account.accountType.name;
         }
         return formData;
+      },
+
+      clear: function () {
+        this.account = {
+          accountHolderFirstName: "",
+          accountHolderLastName: "",
+          accountHolderIdNumber: "",
+          bank: "",
+          branchCode: "",
+          branchName: "",
+          accountNumber: "",
+          accountType: {
+            id: null,
+            name: ""
+          }
+        }
       }
     });
   </script>
