@@ -228,11 +228,11 @@ Element for capturing a new bank account
       serialize: function () {
         var formData = this.$.form.serialize();
         var accountTypeDropDown = this.$$('#accountTypeDropDown');
-        formData.accountType = accountTypeDropDown.selectedItem.item.id;
+        formData.accountType = accountTypeDropDown ? accountTypeDropDown.selectedItem.item.id : this.account.accountType.id;
         // update the readonly version of accountType otherwise switching back to readonly, the dropdown selected value is not reflected
         var readonlyAccountType = this.$$('#readonlyAccountType');
         if (readonlyAccountType) {
-          this.$$('#readonlyAccountType').value = accountTypeDropDown.selectedItem.item.name;
+          this.$$('#readonlyAccountType').value = accountTypeDropDown ? accountTypeDropDown.selectedItem.item.name : this.account.accountType.name;
         }
         return formData;
       }
